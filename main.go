@@ -12,7 +12,7 @@ import (
 
 var palette = []color.Color{color.White, color.Black}
 
-const(
+const (
 	whiteIndex = 0 // first color in palette
 	blackIndex = 1 // next color in palette
 )
@@ -20,13 +20,13 @@ const(
 func main() {
 	lissajous(os.Stdout)
 }
-func lissajous(out io.Writer){
+func lissajous(out io.Writer) {
 	const (
-		cycles = 5 // number of complete x oscillator revolutions
-		res = 0.001 // angular resolution
-		size = 100 // image canvas covers [-size..+size]
-		nframes = 64 // number of animation frames
-		delay = 8 // delay between frmes 10ms units
+		cycles  = 5     // number of complete x oscillator revolutions
+		res     = 0.001 // angular resolution
+		size    = 100   // image canvas covers [-size..+size]
+		nframes = 64    // number of animation frames
+		delay   = 8     // delay between frmes 10ms units
 	)
 	freq := rand.Float64() * 3.0 // relative frequency of y oscillator
 	anim := gif.GIF{LoopCount: nframes}
@@ -34,11 +34,11 @@ func lissajous(out io.Writer){
 	for i := 0; i < nframes; i++ {
 		rect := image.Rect(0, 0, 2*size+1, 2*size+1)
 		img := image.NewPaletted(rect, pallete)
-		for t := 0.0; t < cycles*2math.Pi; t += res {
+		for t := 0.0; t < cycles*2*math.Pi; t += res {
 			x := math.Sin(t)
 			y := math.Sin(t*freq + phase)
 			img.SetColorIndex(size+int(x*size+0.5), size+int(y*size+0.5),
-			blackIndex)
+				blackIndex)
 		}
 		phase += 0.1
 		anim.Delay = append(anim.Delay, delay)
@@ -47,4 +47,3 @@ func lissajous(out io.Writer){
 	gif.EncodeAll(out, &anim) // NOTE: ignoreing encoding errors
 
 }
-
